@@ -1,4 +1,23 @@
-# create-svelte
+# Polygon Cropping Tool
+Cropping tool made for Svelte using HTML5 Canvas.
+
+Features:
+- Upload file
+- Polygon cropping
+- Rectangle cropping
+- Undo, Redo, Reset
+- Manage crops
+- Save crops
+
+## How to use
+1. Install 
+```bash
+npm i polygon-crop-tool
+```
+
+(tbc)
+
+<!-- # create-svelte
 
 Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
@@ -55,4 +74,4 @@ To publish your library to [npm](https://www.npmjs.com):
 
 ```bash
 npm publish
-```
+``` -->
