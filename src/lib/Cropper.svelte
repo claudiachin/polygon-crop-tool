@@ -22,10 +22,11 @@
 
 	// an array to hold user's click-points that define the clipping area
 	let points = [];
+	let moves = [];
 
 	// variables for undo-ing and redo-ing
 	let rpoints = [];
-	let prevMove;
+	let rmoves = [];
 
 	// variables for selecting cropping type
 	let cropType = 'rectangle';
@@ -38,8 +39,6 @@
 	onMount(() => {
 		ctx = canvas.getContext('2d');
 		croppedImgs = document.getElementById('cropped-imgs');
-
-		console.log(typeof cwidth);
 	});
 
 	function onFileSelected(e) {
@@ -101,8 +100,8 @@
 		rpoints.length = 0;
 		rpoints = rpoints;
 
-		// set prevMove
-		prevMove = 'polygon';
+		// add move to moves[]
+		moves = [...moves, 'draw1'];
 
 		// show the user an outline of their current clipping path
 		outlineIt();
@@ -129,10 +128,11 @@
 
 		// maximum two clicks
 		if (points.length < 2) {
-			// push the clicked point to the points[] array and set prevMove
+			// push the clicked point to the points[] array and set moves
+			// add move to moves[]
 			if (points.length == 0) {
 				points = [...points, { x: mx, y: my }];
-				prevMove = 'draw1';
+				moves = [...moves, 'draw1'];
 			} else {
 				points = [
 					...points,
@@ -140,7 +140,7 @@
 					{ x: mx, y: my },
 					{ x: points[0].x, y: my }
 				];
-				prevMove = 'draw3';
+				moves = [...moves, 'draw3'];
 			}
 
 			// show the user an outline of their current clipping path
@@ -180,51 +180,59 @@
 		}
 	}
 
-	// removes a point from points[] and adds it to rpoints[]
+	// removes a point from moves[] and adds it to rmoves[]
 	function undo() {
-		if (prevMove == 'draw3') {
+		var move = moves.pop();
+		if (move == 'draw3') {
 			undoo();
 			undoo();
 			undoo();
-			prevMove = 'undo3';
+			rmoves = [...rmoves, move];
 		} else {
 			undoo();
-			prevMove = 'undo1';
+			rmoves = [...rmoves, move];
 		}
 		outlineIt();
 	}
 
+	// removes a point from points[] and adds it to rpoints[]
 	function undoo() {
-		var move = points.pop();
+		var point = points.pop();
 		points = points;
-		rpoints = [...rpoints, move];
+		rpoints = [...rpoints, point];
+	}
+
+	// removes a point from rmoves[] and adds it to moves[]
+	function redo() {
+		var move = rmoves.pop();
+		if (move == 'draw3') {
+			redoo();
+			redoo();
+			redoo();
+			moves = [...moves, move];
+		} else {
+			redoo();
+			moves = [...moves, move];
+		}
+		outlineIt();
 	}
 
 	// removes a point from rpoints[] and adds it to points[]
-	function redo() {
-		if (prevMove == 'undo3') {
-			redoo();
-			redoo();
-			redoo();
-			prevMove = 'draw3';
-		} else {
-			redoo();
-			prevMove = 'draw1';
-		}
-		outlineIt();
-	}
-
 	function redoo() {
-		var move = rpoints.pop();
+		var point = rpoints.pop();
 		rpoints = rpoints;
-		points = [...points, move];
+		points = [...points, point];
 	}
 
 	function reset() {
-		rpoints.length = 0;
-		rpoints = rpoints;
 		points.length = 0;
 		points = rpoints;
+		rpoints.length = 0;
+		rpoints = rpoints;
+		moves.length = 0;
+		moves = moves;
+		rmoves.length = 0;
+		rmoves = rmoves;
 		outlineIt();
 	}
 
@@ -280,16 +288,23 @@
 			cx.drawImage(canvas, minX, minY, width, height, 0, 0, width, height);
 		}
 
+		// get id of last child to use for new child
+		let idNum = 0;
+		if (croppedImgs.children.length > 0) {
+			let idText = croppedImgs.children[croppedImgs.children.length-1].id.split('-');
+			idNum = parseInt(idText[idText.length - 1]) + 1;
+		}
+
 		// create a new Image() from the new canvas
 		var clippedImage = new Image();
 		clippedImage.onload = function () {
 			// append the new image to the page
-			croppedImgs.appendChild(createDiv(clippedImage));
+			croppedImgs.appendChild(createDiv(clippedImage, idNum));
 		};
 		clippedImage.src = c.toDataURL();
 
 		// add to allCrops{}
-		allCrops = [...allCrops, { id: allCrops.length, points: points.slice() }];
+		allCrops = [...allCrops, { id: idNum, points: points.slice() }];
 
 		// clear the previous points
 		points.length = 0;
@@ -299,19 +314,19 @@
 	}
 
 	// function for adding clipped images to page
-	function createDiv(clippedImage) {
-		clippedImage.id = 'crop-' + croppedImgs.children.length;
+	function createDiv(clippedImage, idNum) {
+		clippedImage.id = 'crop-' + idNum;
 
 		let deleteBtn = document.createElement('button');
-		deleteBtn.id = 'deleteBtn-' + croppedImgs.children.length;
+		deleteBtn.id = 'deleteBtn-' + idNum;
 		deleteBtn.classList.add('icon-button');
 		deleteBtn.innerHTML =
-			'<span class="material-icons-outlined" id="minusIcon-' + croppedImgs.children.length + '">do_not_disturb_on</span>';
+			'<span class="material-icons-outlined" id="minusIcon-' + idNum + '">do_not_disturb_on</span>';
 		deleteBtn.addEventListener('click', deleteCrop);
 
 		let div = document.createElement('div');
 		div.classList.add('cropped-img-div');
-		div.id = 'cropDiv-' + croppedImgs.children.length;
+		div.id = 'cropDiv-' + idNum;
 		div.appendChild(clippedImage);
 		div.appendChild(deleteBtn);
 
