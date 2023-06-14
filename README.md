@@ -1,13 +1,13 @@
 # Polygon Cropping Tool
 Cropping tool made for Svelte using HTML5 Canvas.
 
-Features:
+## Features
 - Upload file
 - Polygon cropping
 - Rectangle cropping
 - Undo, Redo, Reset
 - Manage crops
-- Save crops
+- Save crops (as json)
 
 ## How to use
 1. Install 
@@ -15,7 +15,71 @@ Features:
 npm i polygon-crop-tool
 ```
 
-(tbc)
+2. Add to your project
+```
+// routes/+page.svelte
+<script>
+    import {Cropper, Cropped} from 'polygon-crop-tool';
+
+    // variables to download all the cropped images
+    let allCrops = [];
+    let filename;
+</script>
+
+<Cropper cwidth=500 cheight=750 bind:allCrops={allCrops} bind:filename={filename}/>
+<Cropped bind:allCrops={allCrops} bind:filename={filename}/>
+```
+
+3. Done!
+
+## Additional Info
+Styling can be done to make <code><Cropper /></code> and <code><Cropped /></code> look better. 
+```
+<script>
+    import {Cropper, Cropped} from 'polygon-crop-tool';
+
+    // variables to download all the cropped images
+    let allCrops = [];
+    let filename;
+
+    // media query
+    let innerWidth;
+</script>
+<svelte:window bind:innerWidth={innerWidth}/>
+
+<!-- App can only be used on tablet size and up. -->
+<div class="main-body" class:hide="{innerWidth < 767}">
+    <Cropper cwidth=500 cheight=750 bind:allCrops={allCrops} bind:filename={filename}/>
+    <Cropped bind:allCrops={allCrops} bind:filename={filename}/>
+</div>
+<div class:hide="{innerWidth > 767}">
+    <p>Seems like the screen is too small!</p>
+</div>
+
+<style>
+    .main-body {
+        background: #FFFFFF;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 24px;
+    }
+
+    .hide {
+        display: none !important;
+    }
+
+    @media screen and (min-width: 1025px) {
+        :global(.cropper-wrapper) {
+            justify-content: end !important;
+        }
+    }
+</style>
+```
+
+## Upcoming features
+- Circular cropping
+- Save crops (as images)
 
 <!-- # create-svelte
 
