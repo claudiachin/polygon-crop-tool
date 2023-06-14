@@ -16,7 +16,7 @@ npm i polygon-crop-tool
 ```
 
 2. Add to your project
-```
+```svelte
 // routes/+page.svelte
 <script>
     import {Cropper, Cropped} from 'polygon-crop-tool';
@@ -34,7 +34,7 @@ npm i polygon-crop-tool
 
 ## Additional Info
 Styling can be done to make <code><Cropper /></code> and <code><Cropped /></code> look better. 
-```
+```svelte
 <script>
     import {Cropper, Cropped} from 'polygon-crop-tool';
 
