@@ -393,7 +393,7 @@
 			on:click={input.click()}
 			style={'width:' + cwidth + 'px;height:' + cheight + 'px;'}
 		>
-			<span class="fa-solid fa-images" />
+			<span class="material-icons-outlined">upload_file</span>
 			<h6>Upload image</h6>
 		</button>
 		<input

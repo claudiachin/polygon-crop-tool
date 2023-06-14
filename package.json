@@ -1,6 +1,6 @@
 {
 	"name": "polygon-crop-tool",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -54,5 +54,9 @@
 	"dependencies": {
 		"material-icons": "^1.13.8"
 	},
-	"license": "MIT"
+	"license": "MIT",
+	"description": "Cropping tool made for Svelte using HTML5 Canvas.",
+	"keywords": ["svelte", "cropping", "polygon", "html5", "canvas"],
+	"author": "Claudia Chin (https://github.com/claudiachin/)",
+	"homepage": "https://github.com/claudiachin/polygon-crop-tool"
 }
