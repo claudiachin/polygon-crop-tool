@@ -50,7 +50,6 @@
 				uploadBtn.classList.add('hide');
 				canvas.height = (canvas.width / img.width) * img.height;
 				ctx.strokeStyle = '#ED3996';
-				ctx.fillStyle = '#ED399650';
 				ctx.drawImage(newImg, 0, 0, newImg.width, newImg.height, 0, 0, canvas.width, canvas.height);
 			};
 			if (evt.target && typeof evt.target.result == 'string') {
@@ -94,7 +93,23 @@
 		let my = e.pageY - canvas.offsetTop;
 
 		// push the clicked point to the points[] array
-		points = [...points, { x: mx, y: my }];
+		// check if shiftKey is held
+		if (cropType == 'polygon' && e.shiftKey && points.length > 0) {
+			// calculate angle of mx and my wrt points[points.length-1] to decide horizontal or vertial line
+			let angle = Math.abs(Math.atan2(my - points[points.length-1].y, mx - points[points.length-1].x) * 180 / Math.PI);
+
+			// draw lines
+			ctx.beginPath();
+			if (angle > 45 && angle < 135) {
+				// draw along y-axis
+				points = [...points, { x: points[points.length-1].x, y: my }];
+			} else {
+				// draw along x-axis
+				points = [...points, { x: mx, y: points[points.length-1].y }];
+			}
+		} else {
+			points = [...points, { x: mx, y: my }];
+		}
 
 		// remove points from redo[] array
 		rpoints.length = 0;
@@ -169,6 +184,7 @@
 				ctx.lineTo(points[i].x, points[i].y);
 			}
 			ctx.closePath();
+			ctx.fillStyle = '#ED399650';
 			ctx.fill();
 			ctx.stroke();
 
@@ -360,21 +376,52 @@
 			ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
 			outlineIt();
 
-			// draw lines
-			ctx.beginPath();
-			// draw x-axis
-			ctx.moveTo(mx, 0);
-			ctx.lineTo(mx, my - 10);
-			ctx.moveTo(mx, my + 10);
-			ctx.lineTo(mx, canvas.height);
-			// draw y-axis
-			ctx.moveTo(0, my);
-			ctx.lineTo(mx - 10, my);
-			ctx.moveTo(mx + 10, my);
-			ctx.lineTo(canvas.width, my);
-			ctx.closePath();
-			ctx.stroke();
+			if (cropType == 'polygon' && e.shiftKey && points.length > 0) {
+				// calculate angle of mx and my wrt points[points.length-1] to decide horizontal or vertial line
+				let angle = Math.abs(Math.atan2(my - points[points.length-1].y, mx - points[points.length-1].x) * 180 / Math.PI);
+
+				// draw lines
+				ctx.beginPath();
+				if (angle > 45 && angle < 135) {
+					// draw along y-axis
+					ctx.moveTo(points[points.length-1].x, points[points.length-1].y)
+					ctx.lineTo(points[points.length-1].x, my);
+				} else {
+					// draw along x-axis
+					ctx.moveTo(points[points.length-1].x, points[points.length-1].y)
+					ctx.lineTo(mx, points[points.length-1].y);
+				}
+				ctx.closePath();
+				ctx.stroke();
+			} else {
+				// draw lines
+				ctx.beginPath();
+				// draw x-axis
+				ctx.moveTo(mx, 0);
+				ctx.lineTo(mx, my - 10);
+				ctx.moveTo(mx, my + 10);
+				ctx.lineTo(mx, canvas.height);
+				// draw y-axis
+				ctx.moveTo(0, my);
+				ctx.lineTo(mx - 10, my);
+				ctx.moveTo(mx + 10, my);
+				ctx.lineTo(canvas.width, my);
+				ctx.closePath();
+				ctx.stroke();
+			}
 		}
+
+		// draw tooltip
+		ctx.fillStyle = '#121212';
+		//// check if tooltip will be blocked
+		let tooltip_placement_x = 10;
+		let tooltip_placement_y = 10;
+		if (mx+10+76 > 750) tooltip_placement_x = -10;
+		if (my+10+20 > 750) tooltip_placement_y = -10;
+		ctx.fillRect(mx+tooltip_placement_x, my+tooltip_placement_y, 76, 20);
+		ctx.fillStyle = '#FFF';
+		ctx.font = 'normal 16px';
+		ctx.fillText('x: '+mx+', y: '+my, mx+18, my+24);
 	}
 
 	// function for removing the selected image
