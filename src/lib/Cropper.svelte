@@ -13,6 +13,7 @@
 	let ctx;
 	export let cwidth;
 	export let cheight;
+	export let colours;
 
 	// image to be cropped
 	let img;
@@ -49,8 +50,9 @@
 				canvas.classList.remove('hide');
 				uploadBtn.classList.add('hide');
 				canvas.height = (canvas.width / img.width) * img.height;
-				ctx.strokeStyle = '#ED3996';
 				ctx.drawImage(newImg, 0, 0, newImg.width, newImg.height, 0, 0, canvas.width, canvas.height);
+
+				allCrops = [... allCrops, {cwidth: canvas.width, cheight: canvas.height}];
 			};
 			if (evt.target && typeof evt.target.result == 'string') {
 				newImg.src = evt.target.result;
@@ -99,7 +101,6 @@
 			let angle = Math.abs(Math.atan2(my - points[points.length-1].y, mx - points[points.length-1].x) * 180 / Math.PI);
 
 			// draw lines
-			ctx.beginPath();
 			if (angle > 45 && angle < 135) {
 				// draw along y-axis
 				points = [...points, { x: points[points.length-1].x, y: my }];
@@ -178,13 +179,14 @@
 		ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
 
 		if (points.length > 0) {
+			ctx.strokeStyle = colours.primary;
 			ctx.beginPath();
 			ctx.moveTo(points[0].x, points[0].y);
 			for (var i = 0; i < points.length; i++) {
 				ctx.lineTo(points[i].x, points[i].y);
 			}
 			ctx.closePath();
-			ctx.fillStyle = '#ED399650';
+			ctx.fillStyle = colours.primary+'50';
 			ctx.fill();
 			ctx.stroke();
 
@@ -375,53 +377,96 @@
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 			ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
 			outlineIt();
+		}
 
-			if (cropType == 'polygon' && e.shiftKey && points.length > 0) {
-				// calculate angle of mx and my wrt points[points.length-1] to decide horizontal or vertial line
-				let angle = Math.abs(Math.atan2(my - points[points.length-1].y, mx - points[points.length-1].x) * 180 / Math.PI);
+		// draw vertical and horizontal 
+		if (cropType == 'polygon' && e.shiftKey && points.length > 0) {
+			// calculate angle of mx and my wrt points[points.length-1] to decide horizontal or vertial line
+			let angle = Math.abs(Math.atan2(my - points[points.length-1].y, mx - points[points.length-1].x) * 180 / Math.PI);
 
-				// draw lines
+			// draw lines
+			if (angle > 45 && angle < 135) {
+				drawAxis(points[points.length-1].x, my);
+
+				// draw potential line along y-axis
+				ctx.strokeStyle = colours.primary;
 				ctx.beginPath();
-				if (angle > 45 && angle < 135) {
-					// draw along y-axis
-					ctx.moveTo(points[points.length-1].x, points[points.length-1].y)
-					ctx.lineTo(points[points.length-1].x, my);
-				} else {
-					// draw along x-axis
-					ctx.moveTo(points[points.length-1].x, points[points.length-1].y)
-					ctx.lineTo(mx, points[points.length-1].y);
-				}
+				ctx.moveTo(points[points.length-1].x, points[points.length-1].y)
+				ctx.lineTo(points[points.length-1].x, my);
 				ctx.closePath();
 				ctx.stroke();
 			} else {
-				// draw lines
+				drawAxis(mx, points[points.length-1].y);
+
+				// draw potential line along x-axis
+				ctx.strokeStyle = colours.primary;
 				ctx.beginPath();
-				// draw x-axis
-				ctx.moveTo(mx, 0);
-				ctx.lineTo(mx, my - 10);
-				ctx.moveTo(mx, my + 10);
-				ctx.lineTo(mx, canvas.height);
-				// draw y-axis
-				ctx.moveTo(0, my);
-				ctx.lineTo(mx - 10, my);
-				ctx.moveTo(mx + 10, my);
-				ctx.lineTo(canvas.width, my);
+				ctx.moveTo(points[points.length-1].x, points[points.length-1].y)
+				ctx.lineTo(mx, points[points.length-1].y);
 				ctx.closePath();
 				ctx.stroke();
 			}
+		} else if (cropType == 'polygon' && points.length > 0) {
+			drawAxis(mx, my);
+
+			// draw potential line
+			ctx.strokeStyle = colours.primary;
+			ctx.beginPath();
+			ctx.moveTo(points[points.length-1].x, points[points.length-1].y)
+			ctx.lineTo(mx, my);
+			ctx.closePath();
+			ctx.stroke();
+		} else if (cropType == 'rectangle' && points.length == 1) { 
+			drawAxis(mx, my);
+
+			// draw potential line
+			ctx.strokeStyle = colours.primary;
+			ctx.beginPath();
+			ctx.moveTo(points[points.length-1].x, points[points.length-1].y)
+			ctx.lineTo(points[points.length-1].x, my);
+			ctx.lineTo(mx, my);
+			ctx.lineTo(mx, points[points.length-1].y);
+			ctx.closePath();
+			ctx.stroke();
+		} else {
+			drawAxis(mx, my);
 		}
 
-		// draw tooltip
-		ctx.fillStyle = '#121212';
-		//// check if tooltip will be blocked
+		drawTooltip(mx, my);
+	}
+
+	// fucntion to draw axis lines
+	function drawAxis(mx, my) {
+		ctx.strokeStyle = colours.secondary;
+		ctx.beginPath();
+
+		// draw x-axis
+		ctx.moveTo(mx, 0);
+		ctx.lineTo(mx, my - 10);
+		ctx.moveTo(mx, my + 10);
+		ctx.lineTo(mx, canvas.height);
+		// draw y-axis
+		ctx.moveTo(0, my);
+		ctx.lineTo(mx - 10, my);
+		ctx.moveTo(mx + 10, my);
+		ctx.lineTo(canvas.width, my);
+
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+	// function to draw tooltip
+	function drawTooltip(mx, my) {
+		ctx.fillStyle = colours.tooltip;
+		// check if tooltip will be blocked
 		let tooltip_placement_x = 10;
 		let tooltip_placement_y = 10;
-		if (mx+10+76 > 750) tooltip_placement_x = -10;
-		if (my+10+20 > 750) tooltip_placement_y = -10;
+		if (mx+10+76 > canvas.width) tooltip_placement_x = -86; //-10-76
+		if (my+10+20 > canvas.height) tooltip_placement_y = -30; //-10-20
 		ctx.fillRect(mx+tooltip_placement_x, my+tooltip_placement_y, 76, 20);
-		ctx.fillStyle = '#FFF';
+		ctx.fillStyle = colours.tooltip_text;
 		ctx.font = 'normal 16px';
-		ctx.fillText('x: '+mx+', y: '+my, mx+18, my+24);
+		ctx.fillText('x: '+mx+', y: '+my, mx+tooltip_placement_x+8, my+tooltip_placement_y+14);
 	}
 
 	// function for removing the selected image
@@ -439,7 +484,10 @@
 	}
 </script>
 
-<div class="section cropper-wrapper">
+<div class="section cropper-wrapper"
+	style="--primary-color: {colours.primary};
+	--secondary-color: {colours.secondary};"
+>
 	<div class="canvas">
 		<canvas
 			bind:this={canvas}
@@ -512,7 +560,6 @@
 	}
 
 	.canvas .upload-button {
-		background: transparent;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -532,7 +579,7 @@
 	}
 
 	.selected {
-		color: #ed3996;
+		color: var(--primary-color) !important;
 	}
 
 	button:disabled {
@@ -546,10 +593,11 @@
 	:global(.icon-button) {
 		background: transparent;
 		border: none;
+		color: #404040;
 	}
 
 	:global(.icon-button:hover) {
-		color: #d51477;
+		color: var(--secondary-color);
 	}
 
 	:global(.icon-button:disabled) {
@@ -561,7 +609,7 @@
 	}
 
 	:global(.cropped-img-div) {
-		border: solid 2px #fac7e1;
+		border: solid 2px #404040;
 		padding: 16px;
 		border-radius: 8px;
 		display: flex;

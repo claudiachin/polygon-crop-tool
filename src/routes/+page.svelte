@@ -5,6 +5,13 @@
     let allCrops = [];
     let filename;
 
+    let colours = {
+        primary: '#FF6B6B', // cropping lines + fill
+        secondary: '#4ECDC4', // axis lines
+        tooltip: '#121212',
+        tooltip_text: '#FFFFFF',
+    }
+
     let innerWidth;
 </script>
 
@@ -12,8 +19,8 @@
 
 <!-- App can only be used on tablet size and up. -->
 <div class="main-body" class:hide="{innerWidth < 767}">
-    <Cropper cwidth=500 cheight=750 bind:allCrops={allCrops} bind:filename={filename}/>
-    <Cropped bind:allCrops={allCrops} bind:filename={filename}/>
+    <Cropper cwidth=500 cheight=750 colours={colours} bind:allCrops={allCrops} bind:filename={filename}/>
+    <Cropped colours={colours} bind:allCrops={allCrops} bind:filename={filename}/>
 </div>
 <div class="section main-body" class:hide="{innerWidth > 767}">
     <p>Seems like the screen is too small!</p>

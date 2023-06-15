@@ -3,8 +3,10 @@
 
 	export let allCrops;
 	export let filename;
+	export let colours;
 
 	function save() {
+		console.log(allCrops);
 		var downloadClick = document.createElement('a');
 		downloadClick.setAttribute(
 			'href',
@@ -21,12 +23,15 @@
 	}
 </script>
 
-<div class="section cropped-images-wrapper">
+<div class="section cropped-images-wrapper" 
+	style="--primary-color: {colours.primary}; 
+	--secondary-color: {colours.secondary};"
+>
 	<div>
 		<h6>Images cropped:</h6>
 		<div id="cropped-imgs" />
 	</div>
-	<button on:click={save} disabled={allCrops.length == 0} id="save" title="Save"
+	<button on:click={save} disabled={allCrops.length <= 1} id="save" title="Save"
 		><span class="material-icons-outlined">save</span>
 		<p>Save</p></button
 	>
@@ -46,20 +51,12 @@
 		gap: 8px;
 		justify-content: center;
 		align-items: center;
-		border-radius: 1000px;
-		padding: 8px 32px;
-		border: 2px solid #ed3996;
 		width: max-content;
-		background: transparent;
-	}
-
-	.cropped-images-wrapper #save:hover {
-		border: 2px solid #d51477;
 	}
 
 	.cropped-images-wrapper span {
 		font-size: 16px;
-		color: #000000;
+		color: #404040;
 	}
 
 	#cropped-imgs {

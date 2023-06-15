@@ -26,7 +26,13 @@ npm i polygon-crop-tool
     let filename;
 </script>
 
-<Cropper cwidth=500 cheight=750 bind:allCrops={allCrops} bind:filename={filename}/>
+<Cropper 
+    colour="#ED3996" // colour must be in HEX code. determines the colour of the lines drawn on the canvas.
+    cwidth=500 // determines the width of the canvas
+    cheight=750 // determines the height of the canvas (before an image is loaded)
+    bind:allCrops={allCrops} 
+    bind:filename={filename}
+/>
 <Cropped bind:allCrops={allCrops} bind:filename={filename}/>
 ```
 
@@ -49,7 +55,7 @@ Styling can be done to make <code><Cropper /></code> and <code><Cropped /></code
 
 <!-- App can only be used on tablet size and up. -->
 <div class="main-body" class:hide="{innerWidth < 767}">
-    <Cropper cwidth=500 cheight=750 bind:allCrops={allCrops} bind:filename={filename}/>
+    <Cropper colour="#ED3996" cwidth=500 cheight=750 bind:allCrops={allCrops} bind:filename={filename}/>
     <Cropped bind:allCrops={allCrops} bind:filename={filename}/>
 </div>
 <div class:hide="{innerWidth > 767}">
