@@ -16,6 +16,8 @@ npm i polygon-crop-tool
 ```
 
 2. Add to your project
+The variables `allCrops`, `filename`, and `colours` must be specified.
+
 ```svelte
 // routes/+page.svelte
 <script>
@@ -24,39 +26,54 @@ npm i polygon-crop-tool
     // variables to download all the cropped images
     let allCrops = [];
     let filename;
+
+    // colours
+    let colours = {
+        primary: '#FF6B6B', // cropping lines + fill
+        secondary: '#4ECDC4', // axis lines
+        tooltip: '#121212',
+        tooltip_text: '#FFFFFF',
+    }
 </script>
 
 <Cropper 
-    colour="#ED3996" // colour must be in HEX code. determines the colour of the lines drawn on the canvas.
     cwidth=500 // determines the width of the canvas
     cheight=750 // determines the height of the canvas (before an image is loaded)
+    colours={colours}
     bind:allCrops={allCrops} 
     bind:filename={filename}
 />
-<Cropped bind:allCrops={allCrops} bind:filename={filename}/>
+<Cropped colours={colours} bind:allCrops={allCrops} bind:filename={filename}/>
 ```
 
 3. Done!
 
 ## Additional Info
-Styling can be done to make <code><Cropper /></code> and <code><Cropped /></code> look better. 
+Styling can be done to make `<Cropper />` and `<Cropped />` look better. 
 ```svelte
 <script>
     import {Cropper, Cropped} from 'polygon-crop-tool';
 
-    // variables to download all the cropped images
     let allCrops = [];
     let filename;
+
+    let colours = {
+        primary: '#FF6B6B', // cropping lines + fill
+        secondary: '#4ECDC4', // axis lines
+        tooltip: '#121212',
+        tooltip_text: '#FFFFFF',
+    }
 
     // media query
     let innerWidth;
 </script>
+
 <svelte:window bind:innerWidth={innerWidth}/>
 
 <!-- App can only be used on tablet size and up. -->
 <div class="main-body" class:hide="{innerWidth < 767}">
-    <Cropper colour="#ED3996" cwidth=500 cheight=750 bind:allCrops={allCrops} bind:filename={filename}/>
-    <Cropped bind:allCrops={allCrops} bind:filename={filename}/>
+    <Cropper cwidth=500 cheight=750 colours={colours} bind:allCrops={allCrops} bind:filename={filename}/>
+    <Cropped colours={colours} bind:allCrops={allCrops} bind:filename={filename}/>
 </div>
 <div class:hide="{innerWidth > 767}">
     <p>Seems like the screen is too small!</p>
@@ -80,6 +97,8 @@ Styling can be done to make <code><Cropper /></code> and <code><Cropped /></code
             justify-content: end !important;
         }
     }
+
+    /* add all additional styling here, using :global() */
 </style>
 ```
 
