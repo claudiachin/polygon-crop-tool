@@ -1,5 +1,5 @@
 # Polygon Cropping Tool
-Cropping tool made for Svelte using HTML5 Canvas.
+Cropping tool made for Svelte using HTML5 Canvas. Play with the demo [here](https://claudiachin.github.io/polygon-crop-tool/).
 
 ## Features
 - Upload file
@@ -7,7 +7,12 @@ Cropping tool made for Svelte using HTML5 Canvas.
 - Rectangle cropping
 - Undo, Redo, Reset
 - Manage crops
-- Save crops (as json)
+- Save crops (as .json and .png)
+
+### Example of Polygon Cropping
+In polygon crop mode, users can hold the shift key to draw vertical / horizontal lines.
+
+![polygon cropping](https://i.imgur.com/dBcYMZg.gif)
 
 ## How to use
 1. Install 
@@ -104,7 +109,6 @@ Styling can be done to make `<Cropper />` and `<Cropped />` look better.
 
 ## Upcoming features
 - Circular cropping
-- Save crops (as images)
 
 <!-- # create-svelte
 
