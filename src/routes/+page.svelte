@@ -27,10 +27,49 @@
 </div>
 
 <style lang="scss">
+    @import url('https://fonts.googleapis.com/css2?family=Akshar:wght@300;700&display=swap');
+
     $black: #121212;
     $white: #FFFFFF;
     $primary: #FF6B6B;
     $secondary: #4ECDC4;
+
+    :global(html) {
+        scroll-behavior: smooth;
+    }
+
+    :global(body) {
+        margin: 0;
+    }
+
+    :global(h6, p) {
+        font-family: 'Akshar', sans-serif;
+        text-align: start;
+        margin: 0;
+        color: #121212;
+    }
+
+    :global(h6) {
+        font-size: 20px;
+        font-weight: bold;
+        font-style: normal;
+    }
+
+    :global(p) {
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        margin: 4px 0;
+        white-space: pre-line;
+    }
+
+    :global(a) {
+        text-decoration: none;
+    }
+
+    :global(.section) {
+        padding: 32px;
+    }
 
     .main-body {
         display: flex;
