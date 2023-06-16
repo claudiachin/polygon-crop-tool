@@ -55,7 +55,8 @@
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
-		"material-icons": "^1.13.8"
+		"material-icons": "^1.13.8",
+		"sass": "^1.63.4"
 	},
 	"license": "MIT",
 	"description": "Cropping tool made for Svelte using HTML5 Canvas.",

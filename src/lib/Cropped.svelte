@@ -39,11 +39,11 @@
 		<div id="cropped-imgs" />
 	</div>
 	<div class="save-buttons">
-		<button on:click={saveJson} disabled={allCrops.length <= 1} id="save" title="Save">
+		<button on:click={saveJson} disabled={allCrops.length <= 1} id="save-json" title="Save">
 			<span class="material-icons-outlined">save</span>
 			<p>Save as .json</p>
 		</button>
-		<button on:click={saveImgs} disabled={allCrops.length <= 1} id="save" title="Save">
+		<button on:click={saveImgs} disabled={allCrops.length <= 1} id="save-imgs" title="Save">
 			<span class="material-icons-outlined">save</span>
 			<p>Save as .png</p>
 		</button>
@@ -57,14 +57,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-	}
-
-	.cropped-images-wrapper #save {
-		display: flex;
-		gap: 8px;
-		justify-content: center;
-		align-items: center;
-		width: max-content;
 	}
 
 	.cropped-images-wrapper span {
@@ -85,5 +77,12 @@
 	.save-buttons {
 		display: flex;
 		gap: 8px;
+	}
+
+	.save-buttons > button {
+		display: flex;
+		gap: 8px;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

@@ -18,7 +18,7 @@
 <svelte:window bind:innerWidth={innerWidth}/>
 
 <!-- App can only be used on tablet size and up. -->
-<div class="main-body" class:hide="{innerWidth < 767}">
+<div class="section main-body" class:hide="{innerWidth < 767}">
     <Cropper cwidth=500 cheight=750 colours={colours} bind:allCrops={allCrops} bind:filename={filename}/>
     <Cropped colours={colours} bind:allCrops={allCrops} bind:filename={filename}/>
 </div>
@@ -26,7 +26,12 @@
     <p>Seems like the screen is too small!</p>
 </div>
 
-<style>
+<style lang="scss">
+    $black: #121212;
+    $white: #FFFFFF;
+    $primary: #FF6B6B;
+    $secondary: #4ECDC4;
+
     .main-body {
         display: flex;
         flex-wrap: wrap;
@@ -42,5 +47,31 @@
         :global(.cropper-wrapper) {
             justify-content: end !important;
         }
+    }
+
+    :global(.upload-button) {
+        background: transparent;
+
+        :global(span) {
+            color: $black;
+        }
+    } 
+
+    :global(.cropped-img-div) {
+        border: solid 2px $secondary !important;
+    }
+
+    :global(.save-buttons > button) {
+        border-radius: 1000px;
+        padding: 8px 32px;
+        border: 2px solid $primary;
+        background: transparent;
+    }
+
+    :global(.save-buttons > button:hover) {
+        border-radius: 1000px;
+        padding: 8px 32px;
+        border: 2px solid $secondary;
+        background: transparent;
     }
 </style>
