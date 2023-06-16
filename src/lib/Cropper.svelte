@@ -322,7 +322,7 @@
 		clippedImage.src = c.toDataURL();
 
 		// add to allCrops{}
-		allCrops = [...allCrops, { id: idNum, points: points.slice() }];
+		allCrops = [...allCrops, { id: idNum, base64: c.toDataURL(), points: points.slice() }];
 
 		// clear the previous points
 		points.length = 0;

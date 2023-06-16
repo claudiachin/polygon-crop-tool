@@ -5,14 +5,11 @@
 	export let filename;
 	export let colours;
 
-	function save() {
-		console.log(allCrops);
+	function save(item, ext) {
 		var downloadClick = document.createElement('a');
-		downloadClick.setAttribute(
-			'href',
-			'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(allCrops, null, '\t'))
-		);
-		downloadClick.setAttribute('download', filename + '_crops.json');
+
+		downloadClick.setAttribute('href',item);
+		downloadClick.setAttribute('download', filename + '_crops' + ext);
 
 		downloadClick.style.display = 'none';
 		document.body.appendChild(downloadClick);
@@ -20,6 +17,16 @@
 		downloadClick.click();
 
 		document.body.removeChild(downloadClick);
+	}
+
+	function saveImgs() {
+		for (const item of allCrops.slice(1)) {
+			save(item.base64, '.png');
+		}
+	}
+
+	function saveJson() {
+		save('data:text/plain;charset=utf-8,'+encodeURIComponent(JSON.stringify(allCrops, null, '\t')), '.json');
 	}
 </script>
 
@@ -31,10 +38,16 @@
 		<h6>Images cropped:</h6>
 		<div id="cropped-imgs" />
 	</div>
-	<button on:click={save} disabled={allCrops.length <= 1} id="save" title="Save"
-		><span class="material-icons-outlined">save</span>
-		<p>Save</p></button
-	>
+	<div class="save-buttons">
+		<button on:click={saveJson} disabled={allCrops.length <= 1} id="save" title="Save">
+			<span class="material-icons-outlined">save</span>
+			<p>Save as .json</p>
+		</button>
+		<button on:click={saveImgs} disabled={allCrops.length <= 1} id="save" title="Save">
+			<span class="material-icons-outlined">save</span>
+			<p>Save as .png</p>
+		</button>
+	</div>
 </div>
 
 <style>
@@ -67,5 +80,10 @@
 
 	button:disabled {
 		opacity: 0.5;
+	}
+
+	.save-buttons {
+		display: flex;
+		gap: 8px;
 	}
 </style>
