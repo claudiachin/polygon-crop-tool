@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="./favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link href="./_app/immutable/assets/2.d87a89a4.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.91bdf97b.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.fe0b6a4a.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.a9e98c34.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.c1b51982.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.01913e7b.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.205ccd27.js">
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div>
+
+
+
+
+
+<div class="main-body svelte-yxq03q"><div class="section cropper-wrapper svelte-upex30" style="--primary-color: #FF6B6B; --secondary-color: #4ECDC4;"><div class="canvas svelte-upex30"><canvas width="500" height="750" class="hide svelte-upex30"></canvas>
+		<button class="upload-button svelte-upex30" style="width:500px;height:750px;"><span class="material-icons-outlined svelte-upex30">upload_file</span>
+			<h6>Upload image</h6></button>
+		<input type="file" accept=".jpg, .jpeg, .png" class="hide svelte-upex30"></div>
+	<div class="buttons svelte-upex30"><button disabled class="icon-button selected svelte-upex30" title="Rectangle Crop"><span class="material-icons-outlined">crop</span></button>
+		<button disabled class="icon-button svelte-upex30" title="Polygon Crop"><span class="material-icons-outlined">hexagon</span></button>
+		<button disabled class="icon-button svelte-upex30" title="Reset"><span class="material-icons-outlined">cleaning_services</span></button>
+		<button disabled class="icon-button svelte-upex30" title="Undo"><span class="material-icons-outlined">undo</span></button>
+		<button disabled class="icon-button svelte-upex30" title="Redo"><span class="material-icons-outlined">redo</span></button>
+		<button disabled class="icon-button svelte-upex30" title="Delete"><span class="material-icons-outlined">delete</span></button></div>
+</div>
+    <div class="section cropped-images-wrapper svelte-83aigx" style="--primary-color: #FF6B6B; --secondary-color: #4ECDC4;"><div><h6>Images cropped:</h6>
+		<div id="cropped-imgs" class="svelte-83aigx"></div></div>
+	<div class="save-buttons svelte-83aigx"><button disabled id="save" title="Save" class="svelte-83aigx"><span class="material-icons-outlined svelte-83aigx">save</span>
+			<p>Save as .json</p></button>
+		<button disabled id="save" title="Save" class="svelte-83aigx"><span class="material-icons-outlined svelte-83aigx">save</span>
+			<p>Save as .png</p></button></div>
+</div></div>
+<div class="section main-body svelte-yxq03q"><p>Seems like the screen is too small!</p>
+</div>
+
+
+			
+			<script>
+				{
+					__sveltekit_z9qzbo = {
+						base: new URL(".", location).pathname.slice(0, -1),
+						env: {}
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("./_app/immutable/entry/start.91bdf97b.js"),
+						import("./_app/immutable/entry/app.c1b51982.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
