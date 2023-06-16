@@ -57,6 +57,13 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		gap: 16px;
+	}
+
+	.cropped-images-wrapper div:first-child {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
 	}
 
 	.cropped-images-wrapper span {
