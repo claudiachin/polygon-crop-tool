@@ -9,6 +9,11 @@ Cropping tool made for Svelte using HTML5 Canvas.
 - Manage crops
 - Save crops (as json)
 
+## Example of Polygon Cropping
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/8IB9fuk" data-context="false" ><a href="//imgur.com/a/8IB9fuk"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+In polygon crop mode, users can hold the shift key to draw vertical / horizontal lines.
+
 ## How to use
 1. Install 
 ```bash
@@ -104,7 +109,6 @@ Styling can be done to make `<Cropper />` and `<Cropped />` look better.
 
 ## Upcoming features
 - Circular cropping
-- Save crops (as images)
 
 <!-- # create-svelte
 
