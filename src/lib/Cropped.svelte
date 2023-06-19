@@ -52,7 +52,7 @@
 
 <style>
 	.cropped-images-wrapper {
-		flex: 1 0 400px;
+		flex: 1 0 250px;
 
 		display: flex;
 		flex-direction: column;

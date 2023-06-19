@@ -27,7 +27,7 @@
 </div>
 
 <style lang="scss">
-    @import url('https://fonts.googleapis.com/css2?family=Akshar:wght@300;700&display=swap');
+    // @import url('https://fonts.googleapis.com/css2?family=Akshar:wght@300;700&display=swap');
 
     $black: #121212;
     $white: #FFFFFF;

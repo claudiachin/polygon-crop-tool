@@ -486,7 +486,8 @@
 
 <div class="section cropper-wrapper"
 	style="--primary-color: {colours.primary};
-	--secondary-color: {colours.secondary};"
+	--secondary-color: {colours.secondary};
+	--cwidth: {cwidth}px;"
 >
 	<div class="canvas">
 		<canvas
@@ -546,7 +547,7 @@
 
 <style>
 	.cropper-wrapper {
-		flex: 1 0 500px;
+		flex: 1 0 var(--cwidth);
 
 		display: flex;
 		justify-content: center;
